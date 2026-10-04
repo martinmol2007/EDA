@@ -29,6 +29,7 @@ int main() {
             // Numero que falta
             int falta = V - v[k];
             int pos = -1;
+            
             binary_search(v, 0, n-1, falta, pos);
             if(pos != -1) {
                 if(pos != k) es_possible = true;
