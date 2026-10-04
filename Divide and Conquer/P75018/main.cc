@@ -32,7 +32,7 @@ int main() {
         bool es_possible = false;
 
         int k = 0;
-        while(v[k] < V && k < v.size()) {
+        while(k < v.size() && v[k] < V && not es_possible) {
             int falta = V-v[k];
             int pos = -1;
             if(binary_search(v, 0, v.size()-1, falta, pos)) {
@@ -40,7 +40,7 @@ int main() {
                     es_possible = true;
                 }
                 else {
-                    if((pos <= v.size()-1 && v[pos-1] == v[k]) or (pos >= 0 && v[pos+1] == v[k])) {
+                    if((pos > 0 && v[pos-1] == v[k]) or (pos <= v.size()-1 && v[pos+1] == v[k])) {
                         es_possible = true;
                     }
                 }
