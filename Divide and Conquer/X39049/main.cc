@@ -1,44 +1,51 @@
 #include <iostream>
 #include <vector>
+
 using namespace std;
 
-typedef vector<int> Perm;
-
-// Producte s∘t: r[i] = s[t[i]]
-Perm producte(const Perm& s, const Perm& t) {
-    int n = s.size();
-    Perm r(n);
-    for (int i = 0; i < n; ++i) r[i] = s[t[i]];
-    return r;
+vector<int> vec_defecto(int n) {
+    vector<int> v(n);
+    for(int i = 0; i < n; ++i) v[i] = i;
+    return v;
 }
 
-// Exponenciació ràpida: s^k amb O(log k) productes
-Perm potencia(const Perm& s, int k) {
-    if (k == 0) {
-        // Identitat: (0, 1, ..., n-1)
-        Perm id(s.size());
-        for (int i = 0; i < s.size(); ++i) id[i] = i;
-        return id;
-    } else {
-        Perm y = potencia(s, k/2);
-        if (k % 2 == 0) return producte(y, y);
-        else return producte(producte(y, y), s);
+vector<int> permuta(const vector<int>& vx, const vector<int>& vy) {
+    int n = vx.size();
+    vector<int> res(n);
+    for(int i = 0; i < n; ++i) {
+        int num = vy[i];
+        res[i] = vx[num];
     }
+    return res;
+}
+
+vector<int> permutaciones(const vector<int>& v, int k) {
+    if(k == 0) return vec_defecto(v.size());
+    else {
+        vector<int> y = permutaciones(v, k/2);
+
+        if(k%2==0) return permuta(y, y);
+        else       return permuta(permuta(y, y), v);
+    }
+
 }
 
 int main() {
     int n;
-    while (cin >> n) {
-        Perm s(n);
-        for (int i = 0; i < n; ++i) cin >> s[i];
+    while(cin >> n) {
+        vector<int> v(n);
+        for(int i = 0; i < n; ++i) cin >> v[i];
+
         int k;
         cin >> k;
 
-        Perm r = potencia(s, k);
-        for (int i = 0; i < n; ++i) {
-            if (i > 0) cout << ' ';
-            cout << r[i];
+        vector<int> res = permutaciones(v, k);
+        for(int i = 0; i < n; ++i) {
+            if(i > 0) cout << ' ';
+            cout << res[i];
         }
         cout << endl;
     }
+
+    return 0;
 }
